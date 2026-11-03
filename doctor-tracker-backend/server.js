@@ -1,5 +1,5 @@
-
 console.log("DOCTOR TRACKER BACKEND FILE:", __filename);
+
 require("dns").setServers(["8.8.8.8", "1.1.1.1"]);
 
 const express = require("express");
@@ -7,6 +7,7 @@ const cors = require("cors");
 require("dotenv").config();
 
 const connectDB = require("./config/db");
+
 const authRoutes = require("./routes/authRoutes");
 const doctorRoutes = require("./routes/doctorRoutes");
 const patientRoutes = require("./routes/patientRoutes");
@@ -15,31 +16,19 @@ const dashboardRoutes = require("./routes/dashboardRoutes");
 const app = express();
 
 // Middleware
-app.use(cors());
+app.use(cors({
+    origin: process.env.FRONTEND_URL || "http://localhost:3000"
+}));
+
 app.use(express.json());
 
-// Connect MongoDB
-connectDB();
-
-// Authentication API Routes
+// API Routes
 app.use("/api/auth", authRoutes);
-
-// Doctor API Routes
 app.use("/api/doctors", doctorRoutes);
-// Authentication Test
-app.get("/api/test-security", (req, res) => {
-    res.json({
-        securityMiddleware: require("./middleware/authMiddleware").protect.toString()
-    });
-});
-
-// Patient API Routes
 app.use("/api/patients", patientRoutes);
-
-// Dashboard API Routes
 app.use("/api/dashboard", dashboardRoutes);
 
-// Test API
+// Backend Test API
 app.get("/", (req, res) => {
     res.json({
         success: true,
@@ -47,9 +36,20 @@ app.get("/", (req, res) => {
     });
 });
 
-// Server
+// Start Server After MongoDB Connection
 const PORT = process.env.PORT || 5000;
 
-app.listen(PORT, () => {
-    console.log(`Server is running on port ${PORT}`);
-});
+const startServer = async () => {
+    try {
+        await connectDB();
+
+        app.listen(PORT, "0.0.0.0", () => {
+            console.log(`Server is running on port ${PORT}`);
+        });
+    } catch (error) {
+        console.error("Server Startup Failed:", error.message);
+        process.exit(1);
+    }
+};
+
+startServer();
