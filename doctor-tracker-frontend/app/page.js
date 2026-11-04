@@ -2,6 +2,9 @@
 
 import { useState, useEffect } from "react";
 
+const API_BASE_URL =
+    process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
+
 const doctors = [
   { name: "Dr. Sarah Johnson", specialty: "Cardiologist", patients: 124, status: "Available", color: "bg-blue-100 text-blue-700" },
   { name: "Dr. Michael Chen", specialty: "Neurologist", patients: 98, status: "Available", color: "bg-purple-100 text-purple-700" },
@@ -53,7 +56,7 @@ export default function Dashboard() {
 
           try {
               const response = await fetch(
-                  "http://localhost:5000/api/dashboard/stats",
+                  `${API_BASE_URL}/api/dashboard/stats`,
                   {
                       method: "GET",
                       headers: {
@@ -88,7 +91,7 @@ export default function Dashboard() {
       setLoginLoading(true);
 
       try {
-          const response = await fetch("http://localhost:5000/api/auth/login", {
+          const response = await fetch(`${API_BASE_URL}/api/auth/login`, {
               method: "POST",
               headers: {
                   "Content-Type": "application/json",
@@ -129,8 +132,8 @@ export default function Dashboard() {
 
           const response = await fetch(
               isEditing
-                  ? `http://localhost:5000/api/doctors/${editingDoctorId}`
-                  : "http://localhost:5000/api/doctors",
+                  ? `${API_BASE_URL}/api/doctors/${editingDoctorId}`
+                  : `${API_BASE_URL}/api/doctors`,
               {
                   method: isEditing ? "PUT" : "POST",
                   headers: {
@@ -179,7 +182,7 @@ export default function Dashboard() {
           }
 
           const doctorResponse = await fetch(
-              `http://localhost:5000/api/doctors?${queryParams.toString()}`,
+              `${API_BASE_URL}/api/doctors?${queryParams.toString()}`,
               {
                   headers: {
                       Authorization: `Bearer ${authToken}`,
@@ -198,7 +201,7 @@ export default function Dashboard() {
 
           // Refresh Dashboard Statistics
           const statsResponse = await fetch(
-              "http://localhost:5000/api/dashboard/stats",
+              `${API_BASE_URL}/api/dashboard/stats`,
               {
                   headers: {
                       Authorization: `Bearer ${authToken}`,
@@ -231,8 +234,8 @@ export default function Dashboard() {
 
           const response = await fetch(
               isEditing
-                  ? `http://localhost:5000/api/patients/${editingPatientId}`
-                  : "http://localhost:5000/api/patients",
+                  ? `${API_BASE_URL}/api/patients/${editingPatientId}`
+                  : `${API_BASE_URL}/api/patients`,
               {
                   method: isEditing ? "PUT" : "POST",
                   headers: {
@@ -264,7 +267,7 @@ export default function Dashboard() {
 
           // Refresh Patient List
           const patientResponse = await fetch(
-              "http://localhost:5000/api/patients",
+              `${API_BASE_URL}/api/patients`,
               {
                   headers: {
                       Authorization: `Bearer ${authToken}`,
@@ -283,7 +286,7 @@ export default function Dashboard() {
           // REFRESH SELECTED DOCTOR DETAILS
           if (selectedDoctor?.doctor?._id) {
               const doctorResponse = await fetch(
-                  `http://localhost:5000/api/doctors/${selectedDoctor.doctor._id}`,
+                  `${API_BASE_URL}/api/doctors/${selectedDoctor.doctor._id}`,
                   {
                       headers: {
                           Authorization: `Bearer ${authToken}`,
@@ -300,7 +303,7 @@ export default function Dashboard() {
 
           // Refresh Dashboard Statistics
           const statsResponse = await fetch(
-              "http://localhost:5000/api/dashboard/stats",
+              `${API_BASE_URL}/api/dashboard/stats`,
               {
                   headers: {
                       Authorization: `Bearer ${authToken}`,
@@ -331,7 +334,7 @@ export default function Dashboard() {
 
       try {
           const response = await fetch(
-              `http://localhost:5000/api/patients/${id}`,
+              `${API_BASE_URL}/api/patients/${id}`,
               {
                   method: "DELETE",
                   headers: {
@@ -352,7 +355,7 @@ export default function Dashboard() {
 
           // Refresh Dashboard Statistics
           const statsResponse = await fetch(
-              "http://localhost:5000/api/dashboard/stats",
+              `${API_BASE_URL}/api/dashboard/stats`,
               {
                   headers: {
                       Authorization: `Bearer ${authToken}`,
@@ -383,7 +386,7 @@ export default function Dashboard() {
 
       try {
           const response = await fetch(
-              `http://localhost:5000/api/doctors/${doctorId}`,
+              `${API_BASE_URL}/api/doctors/${doctorId}`,
               {
                   method: "DELETE",
                   headers: {
@@ -417,7 +420,7 @@ export default function Dashboard() {
           }
 
           const doctorResponse = await fetch(
-              `http://localhost:5000/api/doctors?${queryParams.toString()}`,
+              `${API_BASE_URL}/api/doctors?${queryParams.toString()}`,
               {
                   headers: {
                       Authorization: `Bearer ${authToken}`,
@@ -443,7 +446,7 @@ export default function Dashboard() {
 
           // REFRESH DASHBOARD STATISTICS
           const statsResponse = await fetch(
-              "http://localhost:5000/api/dashboard/stats",
+              `${API_BASE_URL}/api/dashboard/stats`,
               {
                   headers: {
                       Authorization: `Bearer ${authToken}`,
@@ -488,7 +491,7 @@ export default function Dashboard() {
 
       try {
           const response = await fetch(
-              `http://localhost:5000/api/doctors/${doctorId}`,
+              `${API_BASE_URL}/api/doctors/${doctorId}`,
               {
                   method: "GET",
                   headers: {
@@ -611,7 +614,7 @@ useEffect(() => {
             }
 
             const response = await fetch(
-                `http://localhost:5000/api/patients?${queryParams.toString()}`,
+                `${API_BASE_URL}/api/patients?${queryParams.toString()}`,
                 {
                     headers: {
                         Authorization: `Bearer ${authToken}`,
@@ -672,7 +675,7 @@ useEffect(() => {
             }
 
             const response = await fetch(
-                `http://localhost:5000/api/doctors?${queryParams.toString()}`,
+                `${API_BASE_URL}/api/doctors?${queryParams.toString()}`,
                 {
                     headers: {
                         Authorization: `Bearer ${authToken}`,
